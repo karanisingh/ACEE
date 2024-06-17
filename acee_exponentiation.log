@@ -1,0 +1,133 @@
+Testing inside file exponentiation.s
+
+Code Under Test
+	PC: 17	bl    exponentiation  
+	PC: 0 	mov   r4  #1          
+	PC: 1 	mov   r3  #0          
+	PC: 2 	cmp   r0  #0          
+	PC: 3 	blt   end             
+	PC: 4 	cmp   r1  #0          
+	PC: 5 	blt   end             
+	PC: 6 	cmp   r3  r1          
+	PC: 7 	beq   end             
+	PC: 8 	mul   r4  r4  r0      
+	PC: 9 	add   r3  r3  #1      
+	PC: 10	b     loop            
+	PC: 11	mov   r0  r4          
+	PC: 12	bx    lr              
+	PC: 18	out   r0              
+	PC: 19	ace_end               
+
+====================   Iteration 1   ====================
+Test Input: 
+	r0 = 0
+	r1 = 0
+
+Coverage:
+	Individual Coverage:	13/16 lines covered (81.2500%)
+	Cumulative Coverage:	13/16 lines covered (81.2500%)
+	PC: 17	bl    exponentiation  X
+	PC: 0 	mov   r4  #1          X
+	PC: 1 	mov   r3  #0          X
+	PC: 2 	cmp   r0  #0          X
+	PC: 3 	blt   end             X
+	PC: 4 	cmp   r1  #0          X
+	PC: 5 	blt   end             X
+	PC: 6 	cmp   r3  r1          X
+	PC: 7 	beq   end             X
+	PC: 8 	mul   r4  r4  r0      
+	PC: 9 	add   r3  r3  #1      
+	PC: 10	b     loop            
+	PC: 11	mov   r0  r4          X
+	PC: 12	bx    lr              X
+	PC: 18	out   r0              X
+	PC: 19	ace_end               X
+
+Path Constraints: 
+	(<= 0 r0)
+	(<= 0 r1)
+	(= 0 r1)
+
+After doing path exploration, we will solve for path constraint: (ast-vector
+  (<= 0 r0)
+  (<= 0 r1)
+  (not (= 0 r1)))
+According to Z3, r0 should be 0
+According to Z3, r1 should be 1
+====================   Iteration 2   ====================
+Test Input: 
+	r0 = 0
+	r1 = 1
+
+Coverage:
+	Individual Coverage:	16/16 lines covered (100.0000%)
+	Cumulative Coverage:	16/16 lines covered (100.0000%)
+	PC: 17	bl    exponentiation  X
+	PC: 0 	mov   r4  #1          X
+	PC: 1 	mov   r3  #0          X
+	PC: 2 	cmp   r0  #0          X
+	PC: 3 	blt   end             X
+	PC: 4 	cmp   r1  #0          X
+	PC: 5 	blt   end             X
+	PC: 6 	cmp   r3  r1          X
+	PC: 7 	beq   end             X
+	PC: 8 	mul   r4  r4  r0      X
+	PC: 9 	add   r3  r3  #1      X
+	PC: 10	b     loop            X
+	PC: 11	mov   r0  r4          X
+	PC: 12	bx    lr              X
+	PC: 18	out   r0              X
+	PC: 19	ace_end               X
+
+Path Constraints: 
+	(<= 0 r0)
+	(<= 0 r1)
+	(not (= 0 r1))
+	(<= 0 r0)
+	(<= 0 r1)
+	(= 1 r1)
+
+After doing path exploration, we will solve for path constraint: (ast-vector
+  (<= 0 r0)
+  (<= 0 r1)
+  (not (= 0 r1))
+  (<= 0 r0)
+  (<= 0 r1)
+  (not (= 1 r1)))
+According to Z3, r0 should be 0
+According to Z3, r1 should be 2
+====================   Iteration 3   ====================
+Test Input: 
+	r0 = 0
+	r1 = 2
+
+
+ We discovered no new lines, we can end execution now
+
+
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+Final Coverage: 16/16 lines covered (100.0000%)
+	PC: 17	bl    exponentiation  1 2 
+	PC: 0 	mov   r4   #1         1 2 
+	PC: 1 	mov   r3   #0         1 2 
+	PC: 2 	cmp   r0   #0         1 2 
+	PC: 3 	blt   end             1 2 
+	PC: 4 	cmp   r1   #0         1 2 
+	PC: 5 	blt   end             1 2 
+	PC: 6 	cmp   r3   r1         1 2 
+	PC: 7 	beq   end             1 2 
+	PC: 8 	mul   r4   r4   r0      2 
+	PC: 9 	add   r3   r3   #1      2 
+	PC: 10	b     loop              2 
+	PC: 11	mov   r0   r4         1 2 
+	PC: 12	bx    lr              1 2 
+	PC: 18	out   r0              1 2 
+	PC: 19	ace_end               1 2 
+
+Final testcases:
+r0=0      	r1=0      	
+r0=0      	r1=1      	
+

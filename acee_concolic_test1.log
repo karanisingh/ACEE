@@ -1,0 +1,180 @@
+Testing inside file concolic_test1.s
+
+Code Under Test
+	PC: 24	bl    test            
+	PC: 0 	push  lr              
+	PC: 1 	mul   r2  r1  #2      
+	PC: 2 	mov   r5  #10         
+	PC: 3 	mov   r6  #100        
+	PC: 4 	mov   r7  #111        
+	PC: 5 	mov   r3  #100000     
+	PC: 6 	cmp   r0  r3          
+	PC: 7 	bne   cond_1          
+	PC: 8 	cmp   r0  r2          
+	PC: 9 	bge   cond_2          
+	PC: 10	b     cond_3          
+	PC: 11	mov   r0  r5          
+	PC: 12	b     end_f           
+	PC: 13	mov   r0  r6          
+	PC: 14	b     end_f           
+	PC: 15	mov   r0  r7          
+	PC: 16	b     end_f           
+	PC: 17	bx    lr              
+	PC: 25	out   r0              
+	PC: 26	ace_end               
+
+====================   Iteration 1   ====================
+Test Input: 
+	r0 = 0
+	r1 = 0
+
+Coverage:
+	Individual Coverage:	14/21 lines covered (66.6667%)
+	Cumulative Coverage:	14/21 lines covered (66.6667%)
+	PC: 24	bl    test            X
+	PC: 0 	push  lr              X
+	PC: 1 	mul   r2  r1  #2      X
+	PC: 2 	mov   r5  #10         X
+	PC: 3 	mov   r6  #100        X
+	PC: 4 	mov   r7  #111        X
+	PC: 5 	mov   r3  #100000     X
+	PC: 6 	cmp   r0  r3          X
+	PC: 7 	bne   cond_1          X
+	PC: 8 	cmp   r0  r2          
+	PC: 9 	bge   cond_2          
+	PC: 10	b     cond_3          
+	PC: 11	mov   r0  r5          X
+	PC: 12	b     end_f           X
+	PC: 13	mov   r0  r6          
+	PC: 14	b     end_f           
+	PC: 15	mov   r0  r7          
+	PC: 16	b     end_f           
+	PC: 17	bx    lr              X
+	PC: 25	out   r0              X
+	PC: 26	ace_end               X
+
+Path Constraints: 
+	(not (= r0 100000))
+
+After doing path exploration, we will solve for path constraint: (ast-vector
+  (= r0 100000))
+According to Z3, r0 should be 100000
+According to Z3, r1 does not have impact, we will pick safe value 0
+====================   Iteration 2   ====================
+Test Input: 
+	r0 = 100000
+	r1 = 0
+
+Coverage:
+	Individual Coverage:	16/21 lines covered (76.1905%)
+	Cumulative Coverage:	18/21 lines covered (85.7143%)
+	PC: 24	bl    test            X
+	PC: 0 	push  lr              X
+	PC: 1 	mul   r2  r1  #2      X
+	PC: 2 	mov   r5  #10         X
+	PC: 3 	mov   r6  #100        X
+	PC: 4 	mov   r7  #111        X
+	PC: 5 	mov   r3  #100000     X
+	PC: 6 	cmp   r0  r3          X
+	PC: 7 	bne   cond_1          X
+	PC: 8 	cmp   r0  r2          X
+	PC: 9 	bge   cond_2          X
+	PC: 10	b     cond_3          
+	PC: 11	mov   r0  r5          
+	PC: 12	b     end_f           
+	PC: 13	mov   r0  r6          X
+	PC: 14	b     end_f           X
+	PC: 15	mov   r0  r7          
+	PC: 16	b     end_f           
+	PC: 17	bx    lr              X
+	PC: 25	out   r0              X
+	PC: 26	ace_end               X
+
+Path Constraints: 
+	(= r0 100000)
+	(>= r0 (* 2 r1))
+
+After doing path exploration, we will solve for path constraint: (ast-vector
+  (= r0 100000)
+  (not (>= r0 (* 2 r1))))
+According to Z3, r0 should be 100000
+According to Z3, r1 should be 50001
+====================   Iteration 3   ====================
+Test Input: 
+	r0 = 100000
+	r1 = 50001
+
+Coverage:
+	Individual Coverage:	17/21 lines covered (80.9524%)
+	Cumulative Coverage:	21/21 lines covered (100.0000%)
+	PC: 24	bl    test            X
+	PC: 0 	push  lr              X
+	PC: 1 	mul   r2  r1  #2      X
+	PC: 2 	mov   r5  #10         X
+	PC: 3 	mov   r6  #100        X
+	PC: 4 	mov   r7  #111        X
+	PC: 5 	mov   r3  #100000     X
+	PC: 6 	cmp   r0  r3          X
+	PC: 7 	bne   cond_1          X
+	PC: 8 	cmp   r0  r2          X
+	PC: 9 	bge   cond_2          X
+	PC: 10	b     cond_3          X
+	PC: 11	mov   r0  r5          
+	PC: 12	b     end_f           
+	PC: 13	mov   r0  r6          
+	PC: 14	b     end_f           
+	PC: 15	mov   r0  r7          X
+	PC: 16	b     end_f           X
+	PC: 17	bx    lr              X
+	PC: 25	out   r0              X
+	PC: 26	ace_end               X
+
+Path Constraints: 
+	(= r0 100000)
+	(not (>= r0 (* 2 r1)))
+
+After doing path exploration, we will solve for path constraint: (ast-vector
+  (= r0 100000))
+According to Z3, r0 should be 100000
+According to Z3, r1 does not have impact, we will pick safe value 0
+====================   Iteration 4   ====================
+Test Input: 
+	r0 = 100000
+	r1 = 0
+
+
+ We discovered no new lines, we can end execution now
+
+
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+Final Coverage: 21/21 lines covered (100.0000%)
+	PC: 24	bl    test            1 2 3 
+	PC: 0 	push  lr              1 2 3 
+	PC: 1 	mul   r2   r1   #2    1 2 3 
+	PC: 2 	mov   r5   #10        1 2 3 
+	PC: 3 	mov   r6   #100       1 2 3 
+	PC: 4 	mov   r7   #111       1 2 3 
+	PC: 5 	mov   r3   #100000    1 2 3 
+	PC: 6 	cmp   r0   r3         1 2 3 
+	PC: 7 	bne   cond_1          1 2 3 
+	PC: 8 	cmp   r0   r2           2 3 
+	PC: 9 	bge   cond_2            2 3 
+	PC: 10	b     cond_3              3 
+	PC: 11	mov   r0   r5         1     
+	PC: 12	b     end_f           1     
+	PC: 13	mov   r0   r6           2   
+	PC: 14	b     end_f             2   
+	PC: 15	mov   r0   r7             3 
+	PC: 16	b     end_f               3 
+	PC: 17	bx    lr              1 2 3 
+	PC: 25	out   r0              1 2 3 
+	PC: 26	ace_end               1 2 3 
+
+Final testcases:
+r0=0      	r1=0      	
+r0=100000 	r1=0      	
+r0=100000 	r1=50001  	
+
